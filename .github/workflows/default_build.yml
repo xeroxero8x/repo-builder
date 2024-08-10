@@ -51,8 +51,10 @@ jobs:
         with:
           name: aur-packages
 
-      - name: Setup Repo & Update Database and Push  
+      - name: Checkout Repository 
         uses: actions/checkout@v4
+
+      - name: Setup Repo, Update Database and Push to Gitlab
         run: |
           source ./scripts/variables.sh 
           git clone https://$GIT_USERNAME:${{secrets.PAT}}@$REPO_URL $REPO_DIR        
