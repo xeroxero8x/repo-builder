@@ -20,7 +20,7 @@ jobs:
           sudo apt-get remove -y containerd containerd.io
           sudo apt-get install -y docker.io curl wget  
           sudo systemctl start docker 
-          sudo usermdo -aG docker $USER 
+          sudo usermod -aG docker $USER 
           curl -o dockerfile https://raw.githubusercontent.com/xeroxero8x/dockerfile/main/arch_template
           docker build -t arch .
 
