@@ -27,12 +27,11 @@ jobs:
 
       - name: Build Packages & Move them to Another directory
         run: |
-          docker run arch /bin/bash -c"
-          bash ./scripts/build_packages.sh
-        "
-        source scripts/variables.sh 
-        docker start arch
-        docker cp arch:/home/builder/$TEMP_DIR ${GITHUB_WORKSPACE}/
+          docker run arch /bin/bash -c "
+          bash ./scripts/build_packages.sh "
+          source scripts/variables.sh 
+          docker start arch
+          docker cp arch:/home/builder/$TEMP_DIR ${GITHUB_WORKSPACE}/
 
       - name: Upload Built Packages
         uses: actions/upload-artifact@v4
