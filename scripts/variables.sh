@@ -9,5 +9,5 @@ AUR_DIR=aur-packages
 ARCH=x86_64
 DB_FILE=$REPO_DIR.db
 FILES_FILE=$REPO_DIR.files
-PACKAGES_LIST=include.list
+PACKAGE_LIST=include.list
 TEMP_DIR=pkgs
