@@ -1,0 +1,63 @@
+name: Build AUR Packages
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 0 * * 7'  # Runs every Sunday at midnight
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Arch Linux Docker Container & Setup Environment
+        run: |
+          sudo apt-get update && sudo apt-get upgrade -y 
+          sudo apt-get remover -y containerd containerd.io
+          sudo apt-get install -y docker.io curl
+          sudo systemctl start docker 
+          sudo usermdo -aG docker $USER 
+          curl -o dockerfile https://raw.githubusercontent.com/xeroxero8x/dockerfile/main/arch_template
+          docker build -t arch .
+
+
+      - name: Build Packages & Move them to Another directory
+        run: |
+          docker run arch /bin/bash -c"
+          bash ./scripts/build_packages.sh
+        "
+        source scripts/variables.sh 
+        docker start arch
+        docker cp arch:/home/builder/$TEMP_DIR ${GITHUB_WORKSPACE}/
+
+      - name: Upload Built Packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: aur-packages
+          path: ${GITHUB_WORKSPACE}/pkgs/*.zst
+
+      - name: Clean up
+        run: docker rm -f arch
+
+  move_push:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download Built Packages
+        uses: actions/download-artifact@v4
+        with:
+          name: aur-packages
+
+      - name: Setup Repo & Update Database and Push  
+        uses: actions/checkout@v4
+        run: |
+          source ./scripts/variables.sh 
+          git clone https://$GIT_USERNAME:${{secrets.PAT}}@$REPO_URL $REPO_DIR        
+          mv *.zst $REPO_DIR/$ARCH/ 
+          cd $REPO_DIR
+          bash ./scripts/update_database.sh
+          bash ./scripts/push_repo.sh 
