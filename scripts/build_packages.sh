@@ -3,7 +3,7 @@
 set -e # Exit immediately if a command exits with a non-zero status
 
 #Sourcing Variables
-source ./variables.sh
+source $HOME/scripts/variables.sh
 
 # Check if package list file exists
 if [[ ! -f $PACKAGE_LIST ]]; then
