@@ -41,8 +41,7 @@ jobs:
       - name: Setup Repo, Update Database and Push to Gitlab
         run: |
           source ./scripts/variables.sh 
-          git clone https://$REPO_URL $REPO_DIR        
+          git clone https://$REPO_URL $REPO_DIR
           mv $TEMP_DIR/*.zst $REPO_DIR/$ARCH/ 
-          cd $REPO_DIR
           bash ./scripts/update_database.sh
           bash ./scripts/push_repo.sh 
