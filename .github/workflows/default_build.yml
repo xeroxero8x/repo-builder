@@ -21,13 +21,13 @@ jobs:
           sudo apt-get install -y docker.io curl wget  
           sudo systemctl start docker 
           sudo usermod -aG docker $USER 
-          curl -o dockerfile https://raw.githubusercontent.com/xeroxero8x/dockerfile/main/arch_template
-          docker build -t arch .
+          docker pull archlinux:latest 
 
 
       - name: Build Packages & Move them to Another directory
         run: |
-          docker run arch /bin/bash -c "
+          docker run --name arch archlinux:latest /bin/bash -c "
+          sudo pacman -Syu --noconfirm base-devel sudo git curl 
           bash ./scripts/build_packages.sh "
           source scripts/variables.sh 
           docker start arch
