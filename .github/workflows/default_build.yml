@@ -21,14 +21,19 @@ jobs:
           sudo apt-get install -y docker.io curl wget  
           sudo systemctl start docker 
           sudo usermod -aG docker $USER 
-          docker pull archlinux:latest 
-
+          docker pull archlinux:latest
 
       - name: Build Packages & Move them to Another directory
         run: |
           docker run --name arch archlinux:latest /bin/bash -c "
-          sudo pacman -Syu --noconfirm base-devel sudo git curl 
-          bash ./scripts/build_packages.sh "
+          pacman -Syu --noconfirm base-devel sudo git curl openh264 wget
+          useradd -m builder && 
+          echo 'builder ALL=(ALL) NOPASSWD: ALL ' >> /etc/sudoers 
+          su - builder -c '
+          cd /home/builder 
+          git clone https://github.com/xeroxero8x/repo-builder ./ 
+          bash ./scripts/build_packages.sh 
+          ' "
           source scripts/variables.sh 
           docker start arch
           docker cp arch:/home/builder/$TEMP_DIR ${GITHUB_WORKSPACE}/
