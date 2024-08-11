@@ -33,38 +33,16 @@ jobs:
           git clone https://github.com/xeroxero8x/repo-builder
           mv repo-builder/* ./  
           bash ./scripts/build_packages.sh
-          ls -la pkgs/
           ' "
           source scripts/variables.sh 
           docker start arch
           docker cp arch:/home/builder/$TEMP_DIR ${GITHUB_WORKSPACE}/
-          ls -la pkgs/
-      - name: Upload Built Packages
-        uses: actions/upload-artifact@v4
-        with:
-          name: aur-packages
-          path: ${GITHUB_WORKSPACE}/pkgs/
-
-      - name: Clean up
-        run: docker rm -f arch
-
-  move_push:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Download Built Packages
-        uses: actions/download-artifact@v4
-        with:
-          name: aur-packages
-
-      - name: Checkout Repository 
-        uses: actions/checkout@v4
 
       - name: Setup Repo, Update Database and Push to Gitlab
         run: |
           source ./scripts/variables.sh 
-          git clone https://$GIT_USERNAME:${{secrets.PAT}}@$REPO_URL $REPO_DIR        
-          mv *.zst $REPO_DIR/$ARCH/ 
+          git clone https://$REPO_URL $REPO_DIR        
+          mv $TEMP_DIR/*.zst $REPO_DIR/$ARCH/ 
           cd $REPO_DIR
           bash ./scripts/update_database.sh
           bash ./scripts/push_repo.sh 
