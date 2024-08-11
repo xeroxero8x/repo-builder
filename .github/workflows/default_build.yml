@@ -33,17 +33,17 @@ jobs:
           git clone https://github.com/xeroxero8x/repo-builder
           mv repo-builder/* ./  
           bash ./scripts/build_packages.sh
-          ls -la 
+          ls -la pkgs/
           ' "
           source scripts/variables.sh 
           docker start arch
           docker cp arch:/home/builder/$TEMP_DIR ${GITHUB_WORKSPACE}/
-          ls -la
+          ls -la pkgs/
       - name: Upload Built Packages
         uses: actions/upload-artifact@v4
         with:
           name: aur-packages
-          path: ${GITHUB_WORKSPACE}/pkgs/*.zst
+          path: ${GITHUB_WORKSPACE}/pkgs/
 
       - name: Clean up
         run: docker rm -f arch
