@@ -40,21 +40,21 @@ while IFS= read -r pkg; do
   echo "Building package: $pkg"
 
   # Clone the AUR repository
-  sudo -u builder git clone "https://aur.archlinux.org/$pkg.git" || {
+  git clone "https://aur.archlinux.org/$pkg.git" || {
     echo "Failed to clone $pkg"
     continue
   }
   cd "$pkg"
 
   # Build the package
-  sudo -u builder makepkg -s --noconfirm --needed || {
+  makepkg -s --noconfirm --needed || {
     echo "Failed to build $pkg"
     cd ..
     continue
   }
 
   # Moving Build package to repo directory
-  sudo -u builder mv *.pkg.tar.zst ../../$TEMP_DIR || {
+  mv *.pkg.tar.zst ../../$TEMP_DIR || {
     echo "Failed to move $pkg"
     continue
   }
