@@ -17,7 +17,7 @@ fi
 #Checking if repo-add exists
 if ! command -v repo-add &>/dev/null; then
   echo "repo-add could not be found"
-  sudo pacman -Sy --noconfirm pacman-contrib
+  sudo pacman -Sy --noconfirm pacman-contrib pacman
 fi
 
 # Add all packages to the repository
