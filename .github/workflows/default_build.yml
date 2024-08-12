@@ -26,6 +26,7 @@ jobs:
       - name: Build Packages & Push to remote repo
         env: 
           PAT: ${{ secrets.PAT }}
+          GIT_EMAIL: ${{ secrets.EMAIL }}
         run: |
           docker run --name arch archlinux:latest /bin/bash -c "
           pacman -Syu --noconfirm base-devel tree sudo git curl openh264 wget pacman-contrib
