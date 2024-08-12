@@ -23,7 +23,7 @@ jobs:
           sudo usermod -aG docker $USER 
           docker pull archlinux:latest
 
-      - name: Build Packages & Move them to Another directory
+      - name: Build Packages & Push to remote repo 
         run: |
           docker run --name arch archlinux:latest /bin/bash -c "
           pacman -Syu --noconfirm base-devel tree sudo git curl openh264 wget pacman-contrib
@@ -32,14 +32,8 @@ jobs:
           su - builder -c ' 
           git clone https://github.com/xeroxero8x/repo-builder
           mv repo-builder/* ./  
-          bash ./scripts/build_packages.sh
-          bash ./scripts/update_database.sh 
-          ' "
-          source scripts/variables.sh 
-          docker start arch
-          docker cp arch:/home/builder/$TEMP_DIR ${GITHUB_WORKSPACE}/
-
-      - name: Setup Repo, Update Database and Push to Gitlab
-        run: |
           source ./scripts/variables.sh 
+          bash ./scripts/build_packages.sh
+          bash ./scripts/update_database.sh
           bash ./scripts/push_repo.sh 
+          ' "
