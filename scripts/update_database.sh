@@ -16,7 +16,6 @@ fi
 
 # Add all packages to the repository
 echo "Running repo-add to update the repository..."
-tree
 repo-add "$ARCH/$DB_FILE.tar.gz" "$ARCH"/*.pkg.tar.zst
 
 # Rename the newly created database files
