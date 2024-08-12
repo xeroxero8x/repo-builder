@@ -26,7 +26,7 @@ jobs:
       - name: Build Packages & Move them to Another directory
         run: |
           docker run --name arch archlinux:latest /bin/bash -c "
-          pacman -Syu --noconfirm base-devel tree sudo git curl openh264 wget
+          pacman -Syu --noconfirm base-devel tree sudo git curl openh264 wget pacman-contrib
           useradd -m builder && 
           echo 'builder ALL=(ALL) NOPASSWD: ALL ' >> /etc/sudoers 
           su - builder -c ' 
