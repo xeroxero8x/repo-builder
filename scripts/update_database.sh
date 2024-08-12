@@ -3,7 +3,7 @@
 set -e # Exit immediately if a command exits with a non-zero status
 
 #sourcing Variables
-source ./variables.sh
+source scripts/variables.sh
 
 # Check for the presence of the database files
 cd $REPO_DIR
