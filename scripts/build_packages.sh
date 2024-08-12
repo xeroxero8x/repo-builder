@@ -19,12 +19,9 @@ if [[ ! -d $AUR_DIR ]]; then
 
 fi
 
-# Check if temoporary directory exists
-if [[ ! -d $TEMP_DIR ]]; then
-  echo "$TEMP_DIR not found ! Creating..."
-  mkdir -p $TEMP_DIR
+#Clonig $REPO_URL
+git clone https://$REPO_URL $REPO_DIR
 
-fi
 # Moving into Aur Directory
 cd $AUR_DIR
 
@@ -54,7 +51,7 @@ while IFS= read -r pkg; do
   }
 
   # Moving Build package to repo directory
-  mv *.pkg.tar.zst ../../$TEMP_DIR || {
+  mv *.pkg.tar.zst ../../$REPO_DIR/$ARCH || {
     echo "Failed to move $pkg"
     continue
   }

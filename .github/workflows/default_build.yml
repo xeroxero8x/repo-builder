@@ -33,6 +33,7 @@ jobs:
           git clone https://github.com/xeroxero8x/repo-builder
           mv repo-builder/* ./  
           bash ./scripts/build_packages.sh
+          bash ./scripts/update_database.sh 
           ' "
           source scripts/variables.sh 
           docker start arch
@@ -41,7 +42,4 @@ jobs:
       - name: Setup Repo, Update Database and Push to Gitlab
         run: |
           source ./scripts/variables.sh 
-          git clone https://$REPO_URL $REPO_DIR
-          mv $TEMP_DIR/*.zst $REPO_DIR/$ARCH/ 
-          bash ./scripts/update_database.sh
           bash ./scripts/push_repo.sh 
