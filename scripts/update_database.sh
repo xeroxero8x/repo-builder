@@ -14,12 +14,6 @@ else
   echo "Database files not found."
 fi
 
-#Checking if repo-add exists
-if ! command -v repo-add &>/dev/null; then
-  echo "repo-add could not be found"
-  sudo pacman -Sy --noconfirm pacman-contrib pacman
-fi
-
 # Add all packages to the repository
 echo "Running repo-add to update the repository..."
 repo-add "$ARCH/$DB_FILE.tar.gz" "$ARCH"/*.pkg.tar.zst
