@@ -8,20 +8,7 @@ on:
     - cron: '0 0 * * 0'  #Runs every Sunday at midnight
 
 jobs:
-  build_docker:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository 
-        uses: actions/checkout@v4
-      - name: Build and Push docker image 
-        uses: docker/build-push-action@v6
-        env:
-          GIT_USERNAME: xeroxero8x
-          REPO: repo-builder
-        with:
-          push: true
-          tags: $GIT_USERNAME/$REPO:latest 
-  build_pkgs:
+  build:
     runs-on: ubuntu-latest
     container:
         image: ghcr.io/xeroxero8x/repo-builder:latest
