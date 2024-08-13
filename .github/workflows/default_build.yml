@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository 
-        run: actions/checkout@v4
+        uses: actions/checkout@v4
       - name: Build and Push docker image 
         uses: docker/build-push-action@v6
         env:
