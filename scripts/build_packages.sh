@@ -11,19 +11,9 @@ if [[ ! -f $PACKAGE_LIST ]]; then
   exit 1
 fi
 
-# Check if $AUR_DIR exists
-if [[ ! -d $AUR_DIR ]]; then
-  echo "$AUR_DIR not found!"
-  echo "Creating $AUR_DIR "
-  mkdir -p $AUR_DIR
-
-fi
 
 #Clonig $REPO_URL
 git clone https://$REPO_URL $REPO_DIR
-
-# Moving into Aur Directory
-cd $AUR_DIR
 
 # Read package names from the list and build each package
 while IFS= read -r pkg; do
@@ -35,30 +25,12 @@ while IFS= read -r pkg; do
   fi
 
   echo "Building package: $pkg"
-
-  # Clone the AUR repository
-  git clone "https://aur.archlinux.org/$pkg.git" || {
-    echo "Failed to clone $pkg"
-    continue
-  }
-  cd "$pkg"
-
-  # Build the package
-  makepkg -s --noconfirm --needed || {
-    echo "Failed to build $pkg"
-    cd ..
-    continue
-  }
-
-  # Moving Build package to repo directory
-  mv *.pkg.tar.zst ../../$REPO_DIR/$ARCH || {
-    echo "Failed to move $pkg"
-    continue
-  }
-  # Return to the AUR directory
-  cd ..
-
-  echo "Successfully built package: $pkg"
+ 
+#Building the package with aurutils
+aur sync --noview --noconfirm $pkg || {
+  echo "Failed to Build $pkg
+  continue
+}
 
 done <"../$PACKAGE_LIST"
 

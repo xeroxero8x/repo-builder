@@ -2,9 +2,6 @@
 
 set -e # Exit immediately if a command exits with a non-zero status
 
-#sourcing Variables
-source scripts/variables.sh
-
 # Check for the presence of the database files
 cd $REPO_DIR
 if [[ -f "$ARCH/$DB_FILE" && -f "$ARCH/$FILES_FILE" ]]; then

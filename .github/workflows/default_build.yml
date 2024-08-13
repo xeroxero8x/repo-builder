@@ -8,35 +8,50 @@ on:
     - cron: '0 0 * * 0'  #Runs every Sunday at midnight
 
 jobs:
-  build:
+  build_docker:
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository 
+        run: actions/checkout@v4
+      - name: Build and Push docker image 
+        uses: docker/build-push-action@v6
+        env:
+          GIT_USERNAME: xeroxero8x
+          REPO: repo-builder
+        with:
+          push: true
+          tags: $GIT_USERNAME/$REPO:latest 
+  build_pkgs:
+    runs-on: ubuntu-latest
+    container:
+        image: ghcr.io/xeroxero8x/repo-builder:latest
+        env: 
+          PAT: ${{secrets.PAT}}
+          GIT_EMAIL: ${{secrets.EMAIL}}
+          GIT_USERNAME: xeroxero8x
+          REPO_DIR: aur-prebuilt
+          ARCH: x86_64
+          REPO_URL: gitlab.com/$GIT_USERNAME/$REPO_DIR
+          AUR_DIR: aur-packages
+          DB_FILE: $REPO_DIR.db
+          FILES_FILE: $REPO_DIR.files
+          PACKAGE_LIST: include.list 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Arch Linux Docker Container & Setup Environment
+      - name: Setup Environment 
         run: |
-          sudo apt-get update && sudo apt-get upgrade -y 
-          sudo apt-get remove -y containerd containerd.io
-          sudo apt-get install -y docker.io curl wget  
-          sudo systemctl start docker 
-          sudo usermod -aG docker $USER 
-          docker pull archlinux:latest
+          sudo pacman -Syu --noconfirm git base-devel curl wget openh264
 
-      - name: Build Packages & Push to remote repo
-        env: 
-          PAT: ${{ secrets.PAT }}
-          GIT_EMAIL: ${{ secrets.EMAIL }}
-        run: |
-          docker run --name arch archlinux:latest /bin/bash -c "
-          pacman -Syu --noconfirm base-devel tree sudo git curl openh264 wget pacman-contrib
-          useradd -m builder && 
-          echo 'builder ALL=(ALL) NOPASSWD: ALL ' >> /etc/sudoers 
-          su - builder -c ' 
-          git clone https://github.com/xeroxero8x/repo-builder
-          mv repo-builder/* ./  
-          source ./scripts/variables.sh 
+      - name: Build Packages 
+        run: | 
           bash ./scripts/build_packages.sh
+
+      - name: Update Database
+        run: |
           bash ./scripts/update_database.sh
-          bash ./scripts/push_repo.sh 
-          ' "
+        
+      - name: Push to repo
+        run: |
+          bash ./scripts/push_repo.sh
