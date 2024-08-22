@@ -9,21 +9,25 @@ RUN pacman -Syu --noconfirm && \
 # Create the 'builder' user with no password
 RUN useradd -m builder && echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
+#Create Workspace directory
+RUN mkdir -p /github/workspace && chown -R builder:builder /github
+
 # Switch to the 'builder' user
 USER builder
 
 # Set the working directory to the builder's home
-WORKDIR /home/builder
+WORKDIR /github/workspace 
 
 # Ensure the copied files have the correct permissions
 RUN sudo chown -R builder:builder /home/builder
 
 RUN git clone https://aur.archlinux.org/aurutils.git && \
     cd aurutils && \
-    makepkg -si --noconfirm 
+    makepkg -si --noconfirm && \
+    cd .. && sudo rm -rf aurutils
 
 # Adding local repo for Aurutils
-RUN echo -e "[aur-prebuilt]\nSigLevel = Optional TrustAll\nServer = file:///home/builder/aur-prebuilt/x86_64/" | sudo tee -a /etc/pacman.conf
+RUN echo -e "[aur-prebuilt]\nSigLevel = Optional TrustAll\nServer = file:///github/workspace/aur-prebuilt/x86_64/" | sudo tee -a /etc/pacman.conf
 #Annonations
 LABEL org.opencontainers.image.source=https://github.com/xeroxero8x/repo-builder/tree/main/docker 
 LABEL org.opencontainers.image.description="My container image for building Arch Repository"
