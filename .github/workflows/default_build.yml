@@ -21,15 +21,15 @@ jobs:
           AUR_DIR: "aur-packages"
           PACKAGE_LIST: "include.list" 
     steps:
-      - name: Concatenate values to Environment
-        run: |
-          echo "REPO_URL=gitlab.com/${{env.GIT_USERNAME}}/${{env.REPO_DIR}}" >> $GITHUB_ENV
-          echo "DB_FILE=${{env.REPO_DIR}}.db" >> $GITHUB_ENV
-          echo "FILES_FILE=${{env.REPO_DIR}}.files" >> $GITHUB_ENV
-          
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Concatenate values to Environment
+        run: |
+          echo "REPO_URL=gitlab.com/$GIT_USERNAME/$REPO_DIR" >> $GITHUB_ENV
+          echo "DB_FILE=$REPO_DIR.db" >> $GITHUB_ENV
+          echo "FILES_FILE=$REPO_DIR.files" >> $GITHUB_ENV
+          
       - name: Setup Environment 
         run: |
           set -e
