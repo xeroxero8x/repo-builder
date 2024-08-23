@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-        image: ghcr.io/xeroxero8x/repo-builder:latest
+        image: archlinux:latest
         env: 
           PAT: ${{secrets.PAT}}
           GIT_EMAIL: ${{secrets.EMAIL}}
@@ -29,16 +29,28 @@ jobs:
 
       - name: Setup Environment 
         run: |
-          sudo pacman -Syu --noconfirm git base-devel curl wget openh264
-
+          set -e 
+          pacman -Syu --noconfirm sudo git base-devel curl wget openh264 vifm pacman-contrib archlinux-keyring bat
+          useradd -m builder && echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+          su builder 
+          sudo chown -R builder:builder /home/builder
+          cd ~
+          ls -la 
+          git clone https://aur.archlinux.org/aurutils.git && \
+          cd aurutils && \
+          makepkg -si --noconfirm
+          cd .. && rm -rf aurutils
+          git clone https://$REPO_URL $REPO_DIR
+          echo -e "[$REPO_DIR]\nSigLevel = Optional TrustAll\nServer = file:///$HOME/$REPO_DIR/$ARCH/" | sudo tee -a /etc/pacman.conf
+          bat /etc/pacman.conf 
       - name: Build Packages 
         run: | 
-          bash ./scripts/build_packages.sh
+          sudo -u builder bash ./scripts/build_packages.sh
 
       - name: Update Database
         run: |
-          bash ./scripts/update_database.sh
+          sudo -u builder bash ./scripts/update_database.sh
         
       - name: Push to repo
         run: |
-          bash ./scripts/push_repo.sh
+          sudo -u builder bash ./scripts/push_repo.sh

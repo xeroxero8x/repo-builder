@@ -10,8 +10,6 @@ if [[ ! -f $PACKAGE_LIST ]]; then
 fi
 
 
-#Clonig $REPO_URL
-git clone https://$REPO_URL $REPO_DIR
 
 # Read package names from the list and build each package
 while IFS= read -r pkg; do
