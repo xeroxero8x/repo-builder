@@ -33,6 +33,7 @@ jobs:
       - name: Setup Environment 
         run: |
           set -e
+          ls -la 
           pacman -Syu --noconfirm sudo 
           useradd -m builder && echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
           sudo --login --user=builder 
@@ -50,7 +51,9 @@ jobs:
           bat /etc/pacman.conf 
           echo "$USER"
       - name: Build Packages 
-        run: | 
+        run: |
+          ls -la 
+          sudo -u builder ls -la
           sudo -u builder bash ./scripts/build_packages.sh
 
       - name: Update Database
