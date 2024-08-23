@@ -39,8 +39,7 @@ jobs:
           sudo chown -R builder:builder /home/builder
           cd /home/builder
           sudo pacman -Syu --noconfirm git base-devel curl wget openh264 vifm pacman-contrib archlinux-keyring bat
-          git clone https://aur.archlinux.org/aurutils.git &&  \
-          git clone https://$REPO_URL $REPO_DIR && \
+          sudo -u builder git clone https://aur.archlinux.org/aurutils.git &&  \
           sudo chown -R builder:builder /home/builder 
           cd aurutils && \
           sudo -u builder makepkg -si --noconfirm
