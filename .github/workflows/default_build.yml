@@ -36,14 +36,15 @@ jobs:
           sudo chown -R builder:builder /home/builder
           cd /home/builder
           sudo pacman -Syu --noconfirm git base-devel curl wget openh264 vifm pacman-contrib archlinux-keyring bat
-          git clone https://aur.archlinux.org/aurutils.git && ls -la && \
+          sudo -u builder git clone https://aur.archlinux.org/aurutils.git && ls -la && \
           cd aurutils && \
           makepkg -si --noconfirm
           ls -la 
           cd .. && rm -rf aurutils
-          git clone https://$REPO_URL $REPO_DIR
+          sudo -u builder git clone https://$REPO_URL $REPO_DIR
           echo -e "[$REPO_DIR]\nSigLevel = Optional TrustAll\nServer = file:///$HOME/$REPO_DIR/$ARCH/" | sudo tee -a /etc/pacman.conf
           bat /etc/pacman.conf 
+          echo "$USER"
       - name: Build Packages 
         run: | 
           sudo -u builder bash ./scripts/build_packages.sh
