@@ -34,11 +34,12 @@ jobs:
           useradd -m builder && echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
           su - builder 
           sudo chown -R builder:builder /home/builder
-          cd ~ || echo "failed"
+          cd /home/builder || echo "failed"
           ls -la 
           git clone https://aur.archlinux.org/aurutils.git && \
           cd aurutils && \
           makepkg -si --noconfirm
+          ls -la 
           cd .. && rm -rf aurutils
           git clone https://$REPO_URL $REPO_DIR
           echo -e "[$REPO_DIR]\nSigLevel = Optional TrustAll\nServer = file:///$HOME/$REPO_DIR/$ARCH/" | sudo tee -a /etc/pacman.conf
