@@ -38,7 +38,7 @@ jobs:
           sudo pacman -Syu --noconfirm git base-devel curl wget openh264 vifm pacman-contrib archlinux-keyring bat
           sudo -u builder git clone https://aur.archlinux.org/aurutils.git && ls -la && \
           cd aurutils && \
-          sudo -u buildr makepkg -si --noconfirm
+          sudo -u builder makepkg -si --noconfirm
           ls -la 
           cd .. && rm -rf aurutils
           sudo -u builder git clone https://$REPO_URL $REPO_DIR
