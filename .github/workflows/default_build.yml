@@ -15,14 +15,14 @@ jobs:
         env: 
           PAT: ${{secrets.PAT}}
           GIT_EMAIL: ${{secrets.EMAIL}}
-          GIT_USERNAME: xeroxero8x
-          REPO_DIR: aur-prebuilt
-          ARCH: x86_64
-          REPO_URL: gitlab.com/$GIT_USERNAME/$REPO_DIR
-          AUR_DIR: aur-packages
-          DB_FILE: $REPO_DIR.db
-          FILES_FILE: $REPO_DIR.files
-          PACKAGE_LIST: include.list 
+          GIT_USERNAME: "xeroxero8x"
+          REPO_DIR: "aur-prebuilt"
+          ARCH: "x86_64"
+          REPO_URL: "gitlab.com/${{env.GIT_USERNAME}}/${{env.REPO_DIR}}"
+          AUR_DIR: "aur-packages"
+          DB_FILE: "${{env.REPO_DIR}}.db"
+          FILES_FILE: "${{env.REPO_DIR}}.files"
+          PACKAGE_LIST: "include.list" 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
