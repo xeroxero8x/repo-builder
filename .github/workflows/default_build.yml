@@ -18,12 +18,15 @@ jobs:
           GIT_USERNAME: "xeroxero8x"
           REPO_DIR: "aur-prebuilt"
           ARCH: "x86_64"
-          REPO_URL: "gitlab.com/${{env.GIT_USERNAME}}/${{env.REPO_DIR}}"
           AUR_DIR: "aur-packages"
-          DB_FILE: "${{env.REPO_DIR}}.db"
-          FILES_FILE: "${{env.REPO_DIR}}.files"
           PACKAGE_LIST: "include.list" 
     steps:
+      - name: Concatenate values to Environment
+        run: |
+          echo "REPO_URL=gitlab.com/${{env.GIT_USERNAME}}/${{env.REPO_DIR}}" >> $GITHUB_ENV
+          echo "DB_FILE=${{env.REPO_DIR}}.db" >> $GITHUB_ENV
+          echo "FILES_FILE=${{env.REPO_DIR}}.files" >> $GITHUB_ENV
+          
       - name: Checkout Repository
         uses: actions/checkout@v4
 
