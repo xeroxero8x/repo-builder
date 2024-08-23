@@ -29,12 +29,13 @@ jobs:
 
       - name: Setup Environment 
         run: |
-          set -e 
-          pacman -Syu --noconfirm sudo git base-devel curl wget openh264 vifm pacman-contrib archlinux-keyring bat
+          set -e
+          pacman -Syu --noconfirm sudo 
           useradd -m builder && echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
           sudo --login --user=builder 
           sudo chown -R builder:builder /home/builder
           cd /home/builder
+          sudo pacman -Syu --noconfirm git base-devel curl wget openh264 vifm pacman-contrib archlinux-keyring bat
           git clone https://aur.archlinux.org/aurutils.git && ls -la && \
           cd aurutils && \
           makepkg -si --noconfirm
