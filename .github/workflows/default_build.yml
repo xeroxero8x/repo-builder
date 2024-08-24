@@ -19,7 +19,8 @@ jobs:
           REPO_DIR: "aur-prebuilt"
           ARCH: "x86_64"
           AUR_DIR: "aur-packages"
-          PACKAGE_LIST: "include.list" 
+          PACKAGE_LIST: "include.list"
+          USER: "builder"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -45,12 +46,13 @@ jobs:
           sudo -u builder makepkg -si --noconfirm
           cd .. && rm -rf aurutils
           sudo -u builder git clone https://$REPO_URL $REPO_DIR
-          echo -e "[$REPO_DIR]\nSigLevel = Optional TrustAll\nServer = file://$HOME/builder/$REPO_DIR/$ARCH/" | sudo tee -a /etc/pacman.conf
+          echo -e "[$REPO_DIR]\nSigLevel = Optional TrustAll\nServer = file://$HOME/builder/$REPO_DIR/$ARCH" | sudo tee -a /etc/pacman.conf
           bat /etc/pacman.conf 
           echo "$USER"
       - name: Build Packages 
         run: |
           su - builder
+          ls -la /home/builder
           ./scripts/build_packages.sh
 
       - name: Update Database
