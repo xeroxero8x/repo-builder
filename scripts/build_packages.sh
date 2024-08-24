@@ -20,9 +20,13 @@ while IFS= read -r pkg; do
   echo "Building package: $pkg"
 
   #Building the package with aurutils
-  sudo -u builder aur sync --noview --noconfirm $pkg || {
+  sudo -u builder yay -S --noconfirm $pkg || {
     echo "Failed to Build $pkg "
     continue
   }
 
 done <"./$PACKAGE_LIST"
+
+ls -la
+
+mv $XXXX/.cache/yay/*/*.zst $XXXX/$REPO_DIR/$ARCH/
