@@ -56,8 +56,10 @@ jobs:
 
       - name: Update Database
         run: |
-          sudo -u builder bash ./scripts/update_database.sh
+          su - builder
+          ./scripts/update_database.sh
         
       - name: Push to repo
         run: |
-          sudo -u builder bash ./scripts/push_repo.sh
+          su - builder
+          ./scripts/push_repo.sh
