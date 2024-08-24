@@ -30,4 +30,3 @@ aur sync --noview --noconfirm $pkg || {
 
 done <"../$PACKAGE_LIST"
 
-echo "Package building process completed."
