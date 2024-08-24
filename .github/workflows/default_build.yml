@@ -13,14 +13,13 @@ jobs:
     container:
         image: archlinux:latest
         env: 
-          PAT: ${{secrets.PAT}}
+          PAT: ${{secrets.PAT}} #Personal access token if your repo is on github or project access token if it's on gitlab 
           GIT_EMAIL: ${{secrets.EMAIL}}
           GIT_USERNAME: "xeroxero8x"
-          REPO_DIR: "aur-prebuilt"
-          ARCH: "x86_64"
-          AUR_DIR: "aur-packages"
-          PACKAGE_LIST: "include.list"
-          USER: "builder"
+          REPO_DIR: "aur-prebuilt" #repo name 
+          ARCH: "x86_64" #Architecture of your device 
+          PACKAGE_LIST: "include.list" #Name of the packages list 
+          USER: "builder" #Non root user 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -30,34 +29,34 @@ jobs:
           echo "REPO_URL=gitlab.com/$GIT_USERNAME/$REPO_DIR" >> $GITHUB_ENV
           echo "DB_FILE=$REPO_DIR.db" >> $GITHUB_ENV
           echo "FILES_FILE=$REPO_DIR.files" >> $GITHUB_ENV
-          echo "XXXX=/home/$USER" >> $GITHUB_ENV
+          echo "XXXX=/home/$USER" >> $GITHUB_ENV #You might think it's something bad but I am unable think of a name for it open an issue if you can find a good name that matches it's use.
       - name: Setup Environment 
         run: |
           set -e 
+          echo "$USER"
           pacman -Syu --noconfirm sudo 
-          useradd -m builder && echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-          sudo --login --user=builder 
-          sudo chown -R builder:builder /home/builder
-          cd /home/builder
+          useradd -m $USER && echo "$USER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+          su - $USER
+          sudo chown -R $USER:$USER /home/$USER
+          cd /home/$USER 
           sudo pacman -Syu --noconfirm git base-devel curl wget openh264 vifm pacman-contrib archlinux-keyring bat
-          sudo -u builder git clone https://aur.archlinux.org/yay.git &&  \
-          sudo chown -R builder:builder /home/builder 
+          sudo -u $USER git clone https://aur.archlinux.org/yay.git &&  \ 
           cd yay && \
-          sudo -u builder makepkg -si --noconfirm
+          sudo -u $USER makepkg -si --noconfirm
           cd .. && rm -rf yay 
-          sudo -u builder git clone https://$REPO_URL $REPO_DIR
+          sudo -u $USER git clone https://$REPO_URL $REPO_DIR
  
       - name: Build Packages 
         run: |
-          su - builder
+          su - $USER
           ./scripts/build_packages.sh
 
       - name: Update Database
         run: |
-          su - builder
+          su - $USER
           ./scripts/update_database.sh
         
       - name: Push to repo
         run: |
-          su - builder
+          su - $USER
           ./scripts/push_repo.sh

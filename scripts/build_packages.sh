@@ -20,7 +20,7 @@ while IFS= read -r pkg; do
   echo "Building package: $pkg"
 
   #Building the package with aurutils
-  sudo -u builder yay -S --noconfirm $pkg || {
+  sudo -u $USER yay -S --noconfirm $pkg || {
     echo "Failed to Build $pkg "
     continue
   }
