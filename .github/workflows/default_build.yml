@@ -46,9 +46,10 @@ jobs:
           sudo -u builder makepkg -si --noconfirm
           cd .. && rm -rf aurutils
           sudo -u builder git clone https://$REPO_URL $REPO_DIR
-          echo -e "[$REPO_DIR]\nSigLevel = Optional TrustAll\nServer = file://$XXXX/$REPO_DIR/$ARCH" | sudo tee -a /etc/pacman.conf
-          bat /etc/pacman.conf 
-          echo "$USER"
+          cd  $REPO_DIR/$ARCH 
+          mv $DB_FILE $DB_FILE.tar.gz
+          mv $FILES_FILE $FILES_FILE.tar.gz 
+          echo -e "[$REPO_DIR]\nSigLevel = Optional TrustAll\nServer = file://$XXXX/$REPO_DIR/$ARCH" | sudo tee -a /etc/pacman.conf 
       - name: Build Packages 
         run: |
           su - builder

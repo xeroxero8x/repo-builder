@@ -5,6 +5,7 @@ set -e # Exit immediately if a command exits with a non-zero status
 # Configure git
 git config --global user.name "$GIT_USERNAME"
 git config --global user.email "$GIT_EMAIL"
+git config --global --add safe.directory $XXXX/$REPO_DIR
 cd $XXXX/$REPO_DIR
 echo "Pushing changes to GitLab"
 git add .
