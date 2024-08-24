@@ -48,7 +48,7 @@ jobs:
           sudo -u builder git clone https://$REPO_URL $REPO_DIR
           cd  $REPO_DIR/$ARCH 
           rm *.db 
-          repo-add "$DB_FILE.tar.gz" *.pkg.tar.zst
+          sudo -u builder repo-add "$DB_FILE.tar.gz" *.pkg.tar.zst
           echo -e "[$REPO_DIR]\nSigLevel = Optional TrustAll\nServer = file://$XXXX/$REPO_DIR/$ARCH" | sudo tee -a /etc/pacman.conf 
       - name: Build Packages 
         run: |

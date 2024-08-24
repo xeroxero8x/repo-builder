@@ -4,9 +4,10 @@ set -e # Exit immediately if a command exits with a non-zero status
 
 # Check for the presence of the database files
 cd $XXXX/$REPO_DIR
+ls -la $ARCH
 if [[ -f "$ARCH/$DB_FILE" && -f "$ARCH/$FILES_FILE" ]]; then
   echo "Database files found. Deleting them..."
-  rm "$ARCH/$DB_FILE*" "$ARCH/$FILES_FILE*"
+  rm "$ARCH/$DB_FILE" "$ARCH/$FILES_FILE"
 else
   echo "Database files not found."
 fi
