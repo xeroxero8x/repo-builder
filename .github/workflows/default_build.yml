@@ -30,7 +30,7 @@ jobs:
           echo "REPO_URL=gitlab.com/$GIT_USERNAME/$REPO_DIR" >> $GITHUB_ENV
           echo "DB_FILE=$REPO_DIR.db" >> $GITHUB_ENV
           echo "FILES_FILE=$REPO_DIR.files" >> $GITHUB_ENV
-          
+          echo "PATH=/home/$USER" >> $GITHUB_ENV
       - name: Setup Environment 
         run: |
           set -e 
@@ -46,7 +46,7 @@ jobs:
           sudo -u builder makepkg -si --noconfirm
           cd .. && rm -rf aurutils
           sudo -u builder git clone https://$REPO_URL $REPO_DIR
-          echo -e "[$REPO_DIR]\nSigLevel = Optional TrustAll\nServer = file://$HOME/builder/$REPO_DIR/$ARCH" | sudo tee -a /etc/pacman.conf
+          echo -e "[$REPO_DIR]\nSigLevel = Optional TrustAll\nServer = file://$PATH/$REPO_DIR/$ARCH" | sudo tee -a /etc/pacman.conf
           bat /etc/pacman.conf 
           echo "$USER"
       - name: Build Packages 
@@ -58,6 +58,7 @@ jobs:
       - name: Update Database
         run: |
           su - builder
+          ls -la $PATH
           ./scripts/update_database.sh
         
       - name: Push to repo
