@@ -50,8 +50,10 @@ jobs:
           bat /etc/pacman.conf 
           echo "$USER"
       - name: Build Packages 
-        run: | 
+        run: |
+          ls -la 
           su - builder
+          ls -la 
           ./scripts/build_packages.sh
 
       - name: Update Database
