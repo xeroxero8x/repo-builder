@@ -25,4 +25,4 @@ while IFS= read -r pkg; do
     continue
   }
 
-done <"../$PACKAGE_LIST"
+done <"./$PACKAGE_LIST"
