@@ -51,8 +51,8 @@ jobs:
           echo "$USER"
       - name: Build Packages 
         run: | 
-          sudo -u builder export PACKAGE_LIST=$PACKAGE_LIST
-          sudo -u builder bash ./scripts/build_packages.sh
+          su - builder
+          ./scripts/build_packages.sh
 
       - name: Update Database
         run: |
