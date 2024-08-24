@@ -40,9 +40,9 @@ jobs:
           sudo chown -R $USER:$USER /home/$USER
           cd /home/$USER 
           sudo pacman -Syu --noconfirm git base-devel curl wget openh264 vifm pacman-contrib archlinux-keyring bat
-          sudo -u $USER git clone https://aur.archlinux.org/yay.git &&  \ 
+          sudo -u $USER git clone https://aur.archlinux.org/yay.git
           ls -la
-          cd yay && \
+          cd yay
           sudo -u $USER makepkg -si --noconfirm
           cd .. && rm -rf yay 
           sudo -u $USER git clone https://$REPO_URL $REPO_DIR
