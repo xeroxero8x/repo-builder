@@ -47,8 +47,8 @@ jobs:
           cd .. && rm -rf aurutils
           sudo -u builder git clone https://$REPO_URL $REPO_DIR
           cd  $REPO_DIR/$ARCH 
-          mv $DB_FILE $DB_FILE.tar.gz
-          mv $FILES_FILE $FILES_FILE.tar.gz 
+          rm *.db 
+          repo-add "$DB_FILE.tar.gz" *.pkg.tar.zst
           echo -e "[$REPO_DIR]\nSigLevel = Optional TrustAll\nServer = file://$XXXX/$REPO_DIR/$ARCH" | sudo tee -a /etc/pacman.conf 
       - name: Build Packages 
         run: |
