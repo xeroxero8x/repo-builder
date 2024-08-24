@@ -43,17 +43,14 @@ jobs:
           sudo chown -R builder:builder /home/builder 
           cd aurutils && \
           sudo -u builder makepkg -si --noconfirm
-          ls -la 
           cd .. && rm -rf aurutils
           sudo -u builder git clone https://$REPO_URL $REPO_DIR
-          echo -e "[$REPO_DIR]\nSigLevel = Optional TrustAll\nServer = file:///$HOME/$REPO_DIR/$ARCH/" | sudo tee -a /etc/pacman.conf
+          echo -e "[$REPO_DIR]\nSigLevel = Optional TrustAll\nServer = file://$HOME/builder/$REPO_DIR/$ARCH/" | sudo tee -a /etc/pacman.conf
           bat /etc/pacman.conf 
           echo "$USER"
       - name: Build Packages 
         run: |
-          ls -la 
           su - builder
-          ls -la 
           ./scripts/build_packages.sh
 
       - name: Update Database
