@@ -14,8 +14,8 @@ jobs:
         image: archlinux:latest
         env: 
           PAT: ${{secrets.PAT}} #Personal access token if your repo is on github or project access token if it's on gitlab 
-          GIT_EMAIL: ${{secrets.EMAIL}}
-          GIT_USERNAME: "xeroxero8x"
+          GIT_EMAIL: ${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com
+          GIT_USERNAME: ${{ github.actor }}
           REPO_DIR: "aur-prebuilt" #repo name 
           ARCH: "x86_64" #Architecture of your device 
           PACKAGE_LIST: "include.list" #Name of the packages list 
@@ -46,6 +46,7 @@ jobs:
           sudo -u $USER makepkg -si --noconfirm
           cd .. && rm -rf yay 
           sudo -u $USER git clone https://$REPO_URL $REPO_DIR
+          sudo -u $USER rm -rf $REPO_DIR/$ARCH/*.zst
  
       - name: Build Packages 
         run: |
@@ -61,3 +62,4 @@ jobs:
         run: |
           su - $USER
           ./scripts/push_repo.sh
+          

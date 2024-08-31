@@ -25,8 +25,16 @@ while IFS= read -r pkg; do
     continue
   }
 
+  #Moving the Packages to Repo_dir
+  sudo -u $USER mv $XXXX/.cache/yay/*/*.zst $XXXX/$REPO_DIR/$ARCH/ || {
+    echo "No Packages Found "
+    continue
+  }
+
+  #Removing Packages form system
+  sudo -u $USER yay -Rns --noconfirm $pkg || {
+    echo "NO packages were found "
+    continue
+  }
+
 done <"./$PACKAGE_LIST"
-
-ls -la
-
-mv $XXXX/.cache/yay/*/*.zst $XXXX/$REPO_DIR/$ARCH/
