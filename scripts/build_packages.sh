@@ -32,9 +32,11 @@ while IFS= read -r pkg; do
   }
 
   #Removing Packages form system
-  sudo -u $USER yay -Rns --noconfirm $pkg || {
-    echo "NO packages were found "
-    continue
-  }
+  if [ "$pkg" != "yay" ]; then
+    sudo -u "$USER" yay -Rns --noconfirm "$pkg" || {
+        echo "No packages were found"
+        continue
+    }
+fi
 
 done <"./$PACKAGE_LIST"
