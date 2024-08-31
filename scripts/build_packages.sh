@@ -26,7 +26,7 @@ while IFS= read -r pkg; do
   }
 
   #Moving the Packages to Repo_dir
-  sudo -u $USER mv $XXXX/.cache/yay/*/*.zst $XXXX/$REPO_DIR/$ARCH/ || {
+  sudo -u $USER mv $USER_HOME/.cache/yay/*/*.zst $USER_HOME/$REPO_DIR/$ARCH/ || {
     echo "No Packages Found "
     continue
   }

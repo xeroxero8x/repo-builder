@@ -29,7 +29,7 @@ jobs:
           echo "REPO_URL=gitlab.com/$GIT_USERNAME/$REPO_DIR" >> $GITHUB_ENV
           echo "DB_FILE=$REPO_DIR.db" >> $GITHUB_ENV
           echo "FILES_FILE=$REPO_DIR.files" >> $GITHUB_ENV
-          echo "XXXX=/home/$USER" >> $GITHUB_ENV #You might think it's something bad but I am unable think of a name for it open an issue if you can find a good name that matches it's use.
+          echo "USER_HOME=/home/$USER" >> $GITHUB_ENV 
       - name: Setup Environment 
         run: |
           set -e 
