@@ -35,6 +35,8 @@ track_large_files() {
 
 # Function to commit and push changes
 commit_and_push() {
+    echo "Moving to the $REPO_DIR"
+    cd $REPO_DIR 
     echo "Committing changes..."
     git commit -m "Add files, tracking large files with Git LFS"
     echo "Pushing to the remote repository..."
