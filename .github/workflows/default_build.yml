@@ -45,8 +45,7 @@ jobs:
           cd yay
           sudo -u $USER makepkg -si --noconfirm
           cd .. && rm -rf yay 
-          sudo -u $USER git clone https://$REPO_URL $REPO_DIR
-          sudo -u $USER rm -rf $REPO_DIR/$ARCH/*.zst
+          sudo -u $USER git clone https://$REPO_URL $REPO_DI
  
       - name: Build Packages 
         run: |
