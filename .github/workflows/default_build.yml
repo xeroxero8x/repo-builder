@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'include.list' #Runs only when list is modified
   schedule:
     - cron: '0 0 * * 0'  #Runs every Sunday at midnight
 
@@ -18,7 +20,7 @@ jobs:
           GIT_USERNAME: ${{ github.actor }}
           REPO_DIR: "aur-prebuilt" #repo name 
           ARCH: "x86_64" #Architecture of your device 
-          PACKAGE_LIST: "include.list" #Name of the packages list 
+          PACKAGE_LIST: "include.list" #Path to the packages list
           USER: "builder" #Non root user 
     steps:
       - name: Checkout Repository
@@ -39,7 +41,7 @@ jobs:
           su - $USER
           sudo chown -R $USER:$USER /home/$USER
           cd /home/$USER 
-          sudo pacman -Syu --noconfirm git base-devel curl wget openh264 vifm pacman-contrib archlinux-keyring bat
+          sudo pacman -Syu --noconfirm git base-devel curl wget openh264 git-lfs pacman-contrib archlinux-keyring bat
           sudo -u $USER git clone https://aur.archlinux.org/yay.git
           ls -la
           cd yay
@@ -51,6 +53,11 @@ jobs:
         run: |
           su - $USER
           ./scripts/build_packages.sh
+
+      - name: Clean Old Packages
+        run: |
+          su - $USER
+          ./scripts/clean_old.sh
 
       - name: Update Database
         run: |
