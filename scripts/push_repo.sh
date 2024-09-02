@@ -22,7 +22,7 @@ check_git_lfs_installed() {
 
 # Function to find .zst files larger than 100MB and track them with Git LFS
 track_large_files() {
-    for file in $(find "$ARCH" -name "*.zst"); do
+    for file in $(find "$ARCH" -name "*.*"); do
         filesize=$(du -b "$file" | cut -f1)
         if (( filesize > 104857600 )); then
             echo "File $file is larger than 100MB ($((filesize / 1048576))MB)."
@@ -34,7 +34,6 @@ track_large_files() {
             git add "$file"
         fi
     done
-    git add .
 }
 
 # Function to commit and push changes
