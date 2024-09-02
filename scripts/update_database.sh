@@ -18,6 +18,10 @@ fi
 echo "Running repo-add to update the repository..."
 repo-add "$ARCH/$DB_FILE.tar.gz" "$ARCH"/*.pkg.tar.zst
 
+#Removing Syslinks
+echo "Removing Linking "
+rm "$ARCH/$DB_FILE" "$ARCH/$FILES_FILE"
+
 # Copy the newly created database and files files
 echo "Copying the new database and files files..."
 cp "$ARCH/$DB_FILE.tar.gz" "$ARCH/$DB_FILE"
