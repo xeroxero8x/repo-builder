@@ -2,8 +2,9 @@
 
 set -e # Exit immediately if a command exits with a non-zero status
 
+#Movig to repo directory
 cd $USER_HOME/$REPO_DIR
-ls -la
+
 # Configure git
 git_config() {
     git config --global user.name "$GIT_USERNAME"
@@ -33,6 +34,7 @@ track_large_files() {
             git add "$file"
         fi
     done
+    git add .
 }
 
 # Function to commit and push changes
