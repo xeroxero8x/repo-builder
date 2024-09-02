@@ -15,8 +15,11 @@ git_config() {
 # Function to check if Git LFS is installed
 check_git_lfs_installed() {
     if ! command -v git-lfs &> /dev/null; then
-        echo "Git LFS is not installed. Please install Git LFS first."
-        exit 1
+        echo "Git LFS is not installed. Attempting to install..."
+        sudo pacman -S git-lfs --noconfirm
+        git lfs install
+        else
+            git lfs install
     fi
 }
 
