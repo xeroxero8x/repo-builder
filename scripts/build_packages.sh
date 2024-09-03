@@ -37,6 +37,8 @@ while IFS= read -r pkg; do
         echo "No packages were found"
         continue
     }
+  else
+    continue 
 fi
 
 done <"./$PACKAGE_LIST"
